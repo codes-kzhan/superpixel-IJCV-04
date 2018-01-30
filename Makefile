@@ -3,21 +3,21 @@ DBG    = -g
 OPT    = -O3
 CPP    = g++
 CFLAGS = $(DBG) $(OPT) $(INCDIR)
-LINK   = -lm 
+LINK   = -lm
 
 .cpp.o:
 	$(CPP) $(CFLAGS) -c $< -o $@
 
-all: segment
+all: segment segment_py
 
 segment: segment.cpp segment-image.h segment-graph.h disjoint-set.h
 	$(CPP) $(CFLAGS) -o segment segment.cpp $(LINK)
 
+segment_py: segment_py.cpp segment-image.h segment-graph.h disjoint-set.h
+	$(CPP) $(CFLAGS) -fPIC -shared -o segment_py.so segment_py.cpp $(LINK)
+
 clean:
-	/bin/rm -f segment *.o
+	/bin/rm -f segment *.o *.so
 
 clean-all: clean
-	/bin/rm -f *~ 
-
-
-
+	/bin/rm -f *~
